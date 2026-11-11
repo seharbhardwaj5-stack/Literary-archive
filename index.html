@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,69 +14,60 @@
 }
 
 body {
-  background: #f7f3ee;
-  color: #21191b;
+  background: #f5f0e8;
+  color: #302b28;
   font-family: Georgia, serif;
 }
 
-/* HEADER */
 header {
-  padding: 50px 8%;
-  background: #21191b;
-  color: #f7f3ee;
-  border-bottom: 4px solid #b69a60;
+  padding: 45px 8%;
+  background: #392e2b;
+  color: #f5f0e8;
 }
 
 header h1 {
   font-size: 42px;
   letter-spacing: 2px;
-  color: #ffffff;
 }
 
 header p {
   margin-top: 12px;
-  color: #d8c9c2;
+  color: #d5c6b6;
   font-style: italic;
 }
 
-/* NAVIGATION */
 nav {
   padding: 18px 8%;
-  background: #70263d;
+  background: #e8ded2;
   display: flex;
-  gap: 30px;
+  gap: 25px;
   flex-wrap: wrap;
 }
 
 nav a {
-  color: #ffffff;
+  color: #493b35;
   text-decoration: none;
-  font-size: 15px;
-  transition: color 0.3s ease;
 }
 
 nav a:hover {
-  color: #d9bd7a;
+  text-decoration: underline;
 }
 
-/* INTRODUCTION */
 .intro {
   padding: 65px 8%;
-  max-width: 1000px;
+  max-width: 900px;
 }
 
 .intro h2 {
   font-size: 30px;
   margin-bottom: 18px;
-  color: #70263d;
 }
 
 .intro p {
   line-height: 1.8;
-  color: #55484a;
+  color: #655a52;
 }
 
-/* ARCHIVE */
 .container {
   padding: 25px 8% 60px;
 }
@@ -84,28 +75,18 @@ nav a:hover {
 .section-title {
   font-size: 28px;
   margin-bottom: 25px;
-  border-bottom: 2px solid #b69a60;
+  border-bottom: 1px solid #c9b9a8;
   padding-bottom: 12px;
-  color: #70263d;
 }
 
 .search {
   width: 100%;
   padding: 14px;
-  border: 1px solid #c9b7ad;
-  background: #ffffff;
+  border: 1px solid #cbbcae;
+  background: #fffdf9;
   font-family: inherit;
   font-size: 15px;
   margin-bottom: 25px;
-  color: #21191b;
-}
-
-.search:focus,
-form input:focus,
-form textarea:focus {
-  outline: none;
-  border-color: #70263d;
-  box-shadow: 0 0 4px rgba(112, 38, 61, 0.2);
 }
 
 .archive {
@@ -115,17 +96,9 @@ form textarea:focus {
 }
 
 .entry {
-  background: #ffffff;
-  padding: 20px;
-  border: 1px solid #d8c7b5;
-  border-top: 4px solid #70263d;
-  box-shadow: 0 4px 12px rgba(33, 25, 27, 0.06);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.entry:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 7px 18px rgba(33, 25, 27, 0.12);
+  background: #fffdf9;
+  padding: 18px;
+  border: 1px solid #e2d7ca;
 }
 
 .entry img {
@@ -138,46 +111,28 @@ form textarea:focus {
 .entry h3 {
   font-size: 22px;
   margin-bottom: 8px;
-  color: #70263d;
 }
 
 .entry p {
-  line-height: 1.7;
+  line-height: 1.6;
   font-size: 14px;
   margin: 9px 0;
-  color: #55484a;
-}
-
-.entry strong {
-  color: #21191b;
 }
 
 .tag {
   display: inline-block;
-  background: #f0e7dc;
-  color: #70263d;
+  background: #e9ddd0;
   padding: 5px 9px;
   font-size: 12px;
   margin: 5px 4px 5px 0;
-  border: 1px solid #d8c7b5;
 }
 
-/* ADD ENTRY SECTION */
 .add-section {
-  background: #eee5dc;
-  padding: 45px 8%;
-  border-top: 1px solid #d8c7b5;
-  border-bottom: 1px solid #d8c7b5;
+  background: #e9dfd4;
+  padding: 40px 8%;
 }
 
 .add-section h2 {
-  margin-bottom: 15px;
-  color: #70263d;
-  font-size: 28px;
-}
-
-.add-section p {
-  color: #55484a;
   margin-bottom: 15px;
 }
 
@@ -185,22 +140,14 @@ form {
   max-width: 750px;
 }
 
-form label {
-  display: block;
-  margin-top: 15px;
-  color: #21191b;
-}
-
-form input,
-form textarea {
+form input, form textarea {
   width: 100%;
   padding: 13px;
   margin: 9px 0;
-  border: 1px solid #c9b7ad;
-  background: #ffffff;
+  border: 1px solid #cbbcae;
+  background: #fffdf9;
   font-family: inherit;
   font-size: 14px;
-  color: #21191b;
 }
 
 form textarea {
@@ -208,59 +155,35 @@ form textarea {
   resize: vertical;
 }
 
-/* BUTTONS */
 button {
-  background: #70263d;
-  color: #ffffff;
+  background: #493831;
+  color: white;
   padding: 13px 22px;
   border: none;
   cursor: pointer;
   margin-top: 12px;
   font-family: inherit;
-  font-size: 14px;
-  transition: background 0.3s ease;
 }
 
 button:hover {
-  background: #21191b;
+  background: #71564a;
 }
 
 .delete {
-  background: #21191b;
-  border-left: 3px solid #b69a60;
+  background: #8a403a;
 }
 
-.delete:hover {
-  background: #70263d;
-}
-
-/* FOOTER */
 footer {
-  background: #21191b;
+  background: #392e2b;
   color: #e8ded2;
   text-align: center;
   padding: 30px;
   font-size: 13px;
-  border-top: 3px solid #b69a60;
 }
 
-/* MOBILE VIEW */
 @media(max-width:600px) {
-  header {
-    padding: 35px 8%;
-  }
-
-  header h1 {
-    font-size: 30px;
-  }
-
-  .intro {
-    padding: 40px 8%;
-  }
-
-  nav {
-    gap: 18px;
-  }
+  header h1 { font-size: 30px; }
+  .intro { padding: 40px 8%; }
 }
 </style>
 </head>
@@ -337,16 +260,15 @@ footer {
 <section class="intro" id="about">
   <h2>About This Archive</h2>
   <p>
-    The Textual Archive is a project that preserves annotated
-    texts,photographsa and literary excerpts. It explores texts
-    through literary and culural theories, examining themes of identity,
-    gender,class,powerand representation while documenting critical interpretations
-    and the relation between literature and society.
+    This archive is an evolving space for critical reading and
+    interpretation. It documents the relationship between texts,
+    readers and society, showing how literature can be understood
+    beyond its written words.
   </p>
 </section>
 
 <footer>
-  The Textual Archive | Literary And Cultural Theory Project
+  The Textual Archive | A Digital Humanities Project
 </footer>
 
 <script>
@@ -473,4 +395,4 @@ displayEntries();
 
 </body>
 </html>
-```
+--
