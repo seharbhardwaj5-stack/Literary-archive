@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Textual Archive</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #f5f0e8;
+  color: #302b28;
+  font-family: Georgia, serif;
+}
+
+header {
+  padding: 45px 8%;
+  background: #392e2b;
+  color: #f5f0e8;
+}
+
+header h1 {
+  font-size: 42px;
+  letter-spacing: 2px;
+}
+
+header p {
+  margin-top: 12px;
+  color: #d5c6b6;
+  font-style: italic;
+}
+
+nav {
+  padding: 18px 8%;
+  background: #e8ded2;
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: #493b35;
+  text-decoration: none;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+.intro {
+  padding: 65px 8%;
+  max-width: 900px;
+}
+
+.intro h2 {
+  font-size: 30px;
+  margin-bottom: 18px;
+}
+
+.intro p {
+  line-height: 1.8;
+  color: #655a52;
+}
+
+.container {
+  padding: 25px 8% 60px;
+}
+
+.section-title {
+  font-size: 28px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #c9b9a8;
+  padding-bottom: 12px;
+}
+
+.search {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #cbbcae;
+  background: #fffdf9;
+  font-family: inherit;
+  font-size: 15px;
+  margin-bottom: 25px;
+}
+
+.archive {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+}
+
+.entry {
+  background: #fffdf9;
+  padding: 18px;
+  border: 1px solid #e2d7ca;
+}
+
+.entry img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.entry h3 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.entry p {
+  line-height: 1.6;
+  font-size: 14px;
+  margin: 9px 0;
+}
+
+.tag {
+  display: inline-block;
+  background: #e9ddd0;
+  padding: 5px 9px;
+  font-size: 12px;
+  margin: 5px 4px 5px 0;
+}
+
+.add-section {
+  background: #e9dfd4;
+  padding: 40px 8%;
+}
+
+.add-section h2 {
+  margin-bottom: 15px;
+}
+
+form {
+  max-width: 750px;
+}
+
+form input, form textarea {
+  width: 100%;
+  padding: 13px;
+  margin: 9px 0;
+  border: 1px solid #cbbcae;
+  background: #fffdf9;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+form textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+button {
+  background: #493831;
+  color: white;
+  padding: 13px 22px;
+  border: none;
+  cursor: pointer;
+  margin-top: 12px;
+  font-family: inherit;
+}
+
+button:hover {
+  background: #71564a;
+}
+
+.delete {
+  background: #8a403a;
+}
+
+footer {
+  background: #392e2b;
+  color: #e8ded2;
+  text-align: center;
+  padding: 30px;
+  font-size: 13px;
+}
+
+@media(max-width:600px) {
+  header h1 { font-size: 30px; }
+  .intro { padding: 40px 8%; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>THE TEXTUAL ARCHIVE</h1>
+  <p>A collection of texts, annotations and interpretations.</p>
+</header>
+
+<nav>
+  <a href="#home">Home</a>
+  <a href="#archive">Archive</a>
+  <a href="#theory">Theories</a>
+  <a href="#about">About</a>
+</nav>
+
+<section class="intro" id="home">
+  <h2>Every Text Holds Multiple Meanings.</h2>
+  <p>
+    Welcome to The Textual Archive, a digital collection dedicated
+    to exploring texts through annotation, literary interpretation
+    and cultural analysis. This archive brings together written
+    texts, visual annotations and critical perspectives to examine
+    how meaning is created, interpreted and understood.
+  </p>
+</section>
+
+<section class="container" id="archive">
+  <h2 class="section-title">The Archive</h2>
+
+  <input class="search" id="search"
+    placeholder="Search by title, author or theory..."
+    oninput="displayEntries()">
+
+  <div class="archive" id="archiveList"></div>
+</section>
+
+<section class="add-section" id="theory">
+  <h2>Add to the Archive</h2>
+  <p>Preserve a text, its annotations and your interpretation.</p>
+
+  <form id="entryForm">
+
+    <input id="title" placeholder="Title of the text" required>
+
+    <input id="author" placeholder="Author / Source">
+
+    <input id="year" placeholder="Year / Publication details">
+
+    <label>Upload annotated photograph:</label>
+    <input type="file" id="photo" accept="image/*" required>
+
+    <textarea id="excerpt"
+      placeholder="Text excerpt or passage"></textarea>
+
+    <textarea id="literary"
+      placeholder="Literary theory: Explain how the text connects with Formalism, Marxism, Feminism, Structuralism, Postcolonialism, etc."></textarea>
+
+    <textarea id="cultural"
+      placeholder="Cultural theory: Explain the text through identity, class, gender, power, ideology, representation, culture, etc."></textarea>
+
+    <textarea id="notes"
+      placeholder="Your annotations, observations and personal interpretation"></textarea>
+
+    <input id="tags"
+      placeholder="Tags (e.g. Feminism, Identity, Power)">
+
+    <button type="submit">Add to Archive</button>
+  </form>
+</section>
+
+<section class="intro" id="about">
+  <h2>About This Archive</h2>
+  <p>
+    This archive is an evolving space for critical reading and
+    interpretation. It documents the relationship between texts,
+    readers and society, showing how literature can be understood
+    beyond its written words.
+  </p>
+</section>
+
+<footer>
+  The Textual Archive | A Digital Humanities Project
+</footer>
+
+<script>
+let entries = JSON.parse(
+  localStorage.getItem("textArchive") || "[]"
+);
+
+function saveEntries() {
+  localStorage.setItem("textArchive", JSON.stringify(entries));
+}
+
+function displayEntries() {
+  const list = document.getElementById("archiveList");
+  const query = document.getElementById("search").value.toLowerCase();
+
+  list.innerHTML = "";
+
+  const filtered = entries.filter(entry =>
+    [entry.title, entry.author, entry.literary,
+     entry.cultural, entry.tags]
+      .join(" ").toLowerCase().includes(query)
+  );
+
+  if (filtered.length === 0) {
+    list.innerHTML = "<p>No entries found. Add your first text!</p>";
+    return;
+  }
+
+  filtered.forEach(entry => {
+    const card = document.createElement("article");
+    card.className = "entry";
+
+    const image = document.createElement("img");
+    image.src = entry.photo;
+    image.alt = "Annotated text: " + entry.title;
+
+    const heading = document.createElement("h3");
+    heading.textContent = entry.title;
+
+    const content = document.createElement("div");
+
+    function addText(label, value) {
+      if (!value) return;
+      const p = document.createElement("p");
+      const strong = document.createElement("strong");
+      strong.textContent = label + ": ";
+      p.appendChild(strong);
+      p.appendChild(document.createTextNode(value));
+      content.appendChild(p);
+    }
+
+    addText("Author", entry.author);
+    addText("Publication", entry.year);
+    addText("Excerpt", entry.excerpt);
+    addText("Literary Theory", entry.literary);
+    addText("Cultural Theory", entry.cultural);
+    addText("Annotations", entry.notes);
+    addText("Tags", entry.tags);
+
+    const remove = document.createElement("button");
+    remove.className = "delete";
+    remove.textContent = "Delete Entry";
+    remove.onclick = () => {
+      if (confirm("Delete this archive entry?")) {
+        entries = entries.filter(e => e.id !== entry.id);
+        saveEntries();
+        displayEntries();
+      }
+    };
+
+    card.append(image, heading, content, remove);
+    list.appendChild(card);
+  });
+}
+
+document.getElementById("entryForm").addEventListener(
+  "submit", function(event) {
+    event.preventDefault();
+
+    const file = document.getElementById("photo").files[0];
+
+    if (!file || !file.type.startsWith("image/")) {
+      alert("Please select a valid image.");
+      return;
+    }
+
+    if (file.size > 1500000) {
+      alert("Please choose an image smaller than 1.5 MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function() {
+      const entry = {
+        id: Date.now(),
+        title: document.getElementById("title").value,
+        author: document.getElementById("author").value,
+        year: document.getElementById("year").value,
+        photo: reader.result,
+        excerpt: document.getElementById("excerpt").value,
+        literary: document.getElementById("literary").value,
+        cultural: document.getElementById("cultural").value,
+        notes: document.getElementById("notes").value,
+        tags: document.getElementById("tags").value
+      };
+
+      entries.unshift(entry);
+      saveEntries();
+      displayEntries();
+
+      document.getElementById("entryForm").reset();
+
+      alert("Your text has been added to the archive!");
+      document.getElementById("archive").scrollIntoView();
+    };
+
+    reader.readAsDataURL(file);
+  }
+);
+
+displayEntries();
+</script>
+
+</body>
+</html>
