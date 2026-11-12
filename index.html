@@ -351,12 +351,21 @@ footer {
 </footer>
 
 <script>
-let entries = JSON.parse(
-  localStorage.getItem("textArchive") || "[]"
-);
+let entries = [];
 
-function saveEntries() {
-  localStorage.setItem("textArchive", JSON.stringify(entries));
+async function loadEntries() {
+    const { data, error } = await supabase
+        .from("archive_entries")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error("Loading error:", error);
+        return;
+    }
+
+    entries = data || [];
+    displayEntries();
 }
 
 function displayEntries() {
