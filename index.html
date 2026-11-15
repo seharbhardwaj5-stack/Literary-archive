@@ -8,276 +8,61 @@
 <title>The Textual Archive</title>
 
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f7f3ee;color:#21191b;font-family:Georgia,serif}
+header{padding:50px 8%;background:#21191b;color:#f7f3ee;border-bottom:4px solid #b69a60}
+header h1{font-size:42px;letter-spacing:2px;color:#fff}
+header p{margin-top:12px;color:#d8c9c2;font-style:italic}
+nav{padding:18px 8%;background:#70263d;display:flex;gap:30px;flex-wrap:wrap}
+nav a{color:#fff;text-decoration:none;font-size:15px;transition:color .3s}
+nav a:hover{color:#d9bd7a}
+.intro{padding:65px 8%;max-width:1000px}
+.intro h2{font-size:30px;margin-bottom:18px;color:#70263d}
+.intro p{line-height:1.8;color:#55484a}
+.container{padding:25px 8% 60px}
+.section-title{font-size:28px;margin-bottom:25px;border-bottom:2px solid #b69a60;padding-bottom:12px;color:#70263d}
+.search{width:100%;padding:14px;border:1px solid #c9b7ad;background:#fff;font-family:inherit;font-size:15px;margin-bottom:25px;color:#21191b}
+.search:focus,form input:focus,form textarea:focus{outline:none;border-color:#70263d;box-shadow:0 0 4px rgba(112,38,61,.2)}
+.archive{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px}
+.entry{background:#fff;padding:20px;border:1px solid #d8c7b5;border-top:4px solid #70263d;box-shadow:0 4px 12px rgba(33,25,27,.06);transition:transform .3s,box-shadow .3s;overflow-wrap:anywhere}
+.entry:hover{transform:translateY(-4px);box-shadow:0 7px 18px rgba(33,25,27,.12)}
+.entry h3{font-size:22px;margin-bottom:8px;color:#70263d}
+.entry p{line-height:1.7;font-size:14px;margin:9px 0;color:#55484a;white-space:pre-wrap}
+.entry strong{color:#21191b}
+.photo-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:9px;margin-bottom:16px}
+.photo-gallery a{display:block;overflow:hidden;background:#eee5dc;border:1px solid #d8c7b5}
+.photo-gallery img{display:block;width:100%;height:150px;object-fit:cover;transition:transform .25s}
+.photo-gallery a:hover img{transform:scale(1.04)}
+.photo-count{font-size:12px;color:#76666a;margin:0 0 10px}
+.add-section{background:#eee5dc;padding:45px 8%;border-top:1px solid #d8c7b5;border-bottom:1px solid #d8c7b5}
+.add-section h2{margin-bottom:15px;color:#70263d;font-size:28px}
+.add-section p{color:#55484a;margin-bottom:15px}
+form{max-width:750px}
+form label{display:block;margin-top:15px;color:#21191b}
+form input,form textarea{width:100%;padding:13px;margin:9px 0;border:1px solid #c9b7ad;background:#fff;font-family:inherit;font-size:14px;color:#21191b}
+form textarea{min-height:100px;resize:vertical}
+input[type=file]{padding:10px}
+.help-text{font-size:13px;color:#66585a;line-height:1.5;margin:0 0 8px}
+#photoPreview{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin:10px 0}
+#photoPreview img{width:100%;height:100px;object-fit:cover;border:1px solid #c9b7ad}
+button{background:#70263d;color:#fff;padding:13px 22px;border:0;cursor:pointer;margin-top:12px;font-family:inherit;font-size:14px;transition:background .3s}
+button:hover{background:#21191b}
+button:disabled{opacity:.6;cursor:not-allowed}
+.delete{background:#21191b;border-left:3px solid #b69a60}
+.delete:hover{background:#70263d}
+.admin-area{background:#eee5dc;padding:28px 8%;border-top:1px solid #d8c7b5}
+.admin-area h2{color:#70263d;font-size:24px;margin-bottom:12px}
+.admin-area p{color:#55484a;margin-bottom:12px;line-height:1.6}
+.admin-area form{max-width:480px}
+#adminStatus{margin-top:10px;font-size:14px}
+footer{background:#21191b;color:#e8ded2;text-align:center;padding:30px;font-size:13px;border-top:3px solid #b69a60}
 
-body {
-  background: #f7f3ee;
-  color: #21191b;
-  font-family: Georgia, serif;
-}
-
-header {
-  padding: 50px 8%;
-  background: #21191b;
-  color: #f7f3ee;
-  border-bottom: 4px solid #b69a60;
-}
-
-header h1 {
-  font-size: 42px;
-  letter-spacing: 2px;
-  color: #fff;
-}
-
-header p {
-  margin-top: 12px;
-  color: #d8c9c2;
-  font-style: italic;
-}
-
-nav {
-  padding: 18px 8%;
-  background: #70263d;
-  display: flex;
-  gap: 30px;
-  flex-wrap: wrap;
-}
-
-nav a {
-  color: #fff;
-  text-decoration: none;
-  font-size: 15px;
-  transition: color .3s ease;
-}
-
-nav a:hover {
-  color: #d9bd7a;
-}
-
-.intro {
-  padding: 65px 8%;
-  max-width: 1000px;
-}
-
-.intro h2 {
-  font-size: 30px;
-  margin-bottom: 18px;
-  color: #70263d;
-}
-
-.intro p {
-  line-height: 1.8;
-  color: #55484a;
-}
-
-.container {
-  padding: 25px 8% 60px;
-}
-
-.section-title {
-  font-size: 28px;
-  margin-bottom: 25px;
-  border-bottom: 2px solid #b69a60;
-  padding-bottom: 12px;
-  color: #70263d;
-}
-
-.search {
-  width: 100%;
-  padding: 14px;
-  border: 1px solid #c9b7ad;
-  background: #fff;
-  font-family: inherit;
-  font-size: 15px;
-  margin-bottom: 25px;
-  color: #21191b;
-}
-
-.search:focus,
-form input:focus,
-form textarea:focus {
-  outline: none;
-  border-color: #70263d;
-  box-shadow: 0 0 4px rgba(112,38,61,.2);
-}
-
-.archive {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
-  gap: 25px;
-}
-
-.entry {
-  background: #fff;
-  padding: 20px;
-  border: 1px solid #d8c7b5;
-  border-top: 4px solid #70263d;
-  box-shadow: 0 4px 12px rgba(33,25,27,.06);
-  transition: transform .3s ease, box-shadow .3s ease;
-  overflow-wrap: anywhere;
-}
-
-.entry:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 7px 18px rgba(33,25,27,.12);
-}
-
-.entry img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  margin-bottom: 15px;
-}
-
-.entry h3 {
-  font-size: 22px;
-  margin-bottom: 8px;
-  color: #70263d;
-}
-
-.entry p {
-  line-height: 1.7;
-  font-size: 14px;
-  margin: 9px 0;
-  color: #55484a;
-  white-space: pre-wrap;
-}
-
-.entry strong {
-  color: #21191b;
-}
-
-.add-section {
-  background: #eee5dc;
-  padding: 45px 8%;
-  border-top: 1px solid #d8c7b5;
-  border-bottom: 1px solid #d8c7b5;
-}
-
-.add-section h2 {
-  margin-bottom: 15px;
-  color: #70263d;
-  font-size: 28px;
-}
-
-.add-section p {
-  color: #55484a;
-  margin-bottom: 15px;
-}
-
-form {
-  max-width: 750px;
-}
-
-form label {
-  display: block;
-  margin-top: 15px;
-  color: #21191b;
-}
-
-form input,
-form textarea {
-  width: 100%;
-  padding: 13px;
-  margin: 9px 0;
-  border: 1px solid #c9b7ad;
-  background: #fff;
-  font-family: inherit;
-  font-size: 14px;
-  color: #21191b;
-}
-
-form textarea {
-  min-height: 100px;
-  resize: vertical;
-}
-
-button {
-  background: #70263d;
-  color: #fff;
-  padding: 13px 22px;
-  border: none;
-  cursor: pointer;
-  margin-top: 12px;
-  font-family: inherit;
-  font-size: 14px;
-  transition: background .3s ease;
-}
-
-button:hover {
-  background: #21191b;
-}
-
-button:disabled {
-  opacity: .6;
-  cursor: not-allowed;
-}
-
-.delete {
-  background: #21191b;
-  border-left: 3px solid #b69a60;
-}
-
-.delete:hover {
-  background: #70263d;
-}
-
-.admin-area {
-  background: #eee5dc;
-  padding: 28px 8%;
-  border-top: 1px solid #d8c7b5;
-}
-
-.admin-area h2 {
-  color: #70263d;
-  font-size: 24px;
-  margin-bottom: 12px;
-}
-
-.admin-area p {
-  color: #55484a;
-  margin-bottom: 12px;
-  line-height: 1.6;
-}
-
-.admin-area form {
-  max-width: 480px;
-}
-
-#adminStatus {
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-footer {
-  background: #21191b;
-  color: #e8ded2;
-  text-align: center;
-  padding: 30px;
-  font-size: 13px;
-  border-top: 3px solid #b69a60;
-}
-
-@media(max-width:600px) {
-  header {
-    padding: 35px 8%;
-  }
-
-  header h1 {
-    font-size: 30px;
-  }
-
-  .intro {
-    padding: 40px 8%;
-  }
-
-  nav {
-    gap: 18px;
-  }
+@media(max-width:600px){
+ header{padding:35px 8%}
+ header h1{font-size:30px}
+ .intro{padding:40px 8%}
+ nav{gap:18px}
+ .photo-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 </style>
 </head>
@@ -285,156 +70,129 @@ footer {
 <body>
 
 <header>
-  <h1>THE TEXTUAL ARCHIVE</h1>
-  <p>A collection of texts, annotations and interpretations.</p>
+<h1>THE TEXTUAL ARCHIVE</h1>
+<p>A collection of texts, annotations and interpretations.</p>
 </header>
 
 <nav>
-  <a href="#home">Home</a>
-  <a href="#archive">Archive</a>
-  <a href="#theory">Theories</a>
-  <a href="#about">About</a>
-  <a href="#admin">Admin</a>
+<a href="#home">Home</a>
+<a href="#archive">Archive</a>
+<a href="#theory">Add to Archive</a>
+<a href="#about">About</a>
+<a href="#admin">Admin</a>
 </nav>
 
 <section class="intro" id="home">
-  <h2>Every Text Holds Multiple Meanings.</h2>
-  <p>
-    Welcome to The Textual Archive, a digital collection dedicated
-    to exploring texts through annotation, literary interpretation
-    and cultural analysis. This archive brings together written
-    texts, visual annotations and critical perspectives to examine
-    how meaning is created, interpreted and understood.
-  </p>
+<h2>Every Text Holds Multiple Meanings.</h2>
+<p>
+Welcome to The Textual Archive, a digital collection dedicated
+to exploring texts through annotation, literary interpretation
+and cultural analysis. This archive brings together written
+texts, visual annotations and critical perspectives to examine
+how meaning is created, interpreted and understood.
+</p>
 </section>
 
 <section class="container" id="archive">
-  <h2 class="section-title">The Archive</h2>
-
-  <input
-    class="search"
-    id="search"
-    placeholder="Search by title, author or theory..."
-  >
-
-  <div class="archive" id="archiveList">
-    <p>Loading archive...</p>
-  </div>
+<h2 class="section-title">The Archive</h2>
+<input class="search" id="search"
+placeholder="Search by title, author or theory..."
+aria-label="Search archive">
+<div class="archive" id="archiveList">
+<p>Loading archive...</p>
+</div>
 </section>
 
 <section class="admin-area" id="admin">
-  <h2>Archive Administrator</h2>
+<h2>Archive Administrator</h2>
+<p>
+Sign in with the email address and password already registered
+in Supabase. Visitors can browse the archive without signing in.
+</p>
 
-  <p>
-    Sign in with the email address and password already registered
-    in Supabase. Visitors can browse the archive without signing in.
-  </p>
+<form id="adminLoginForm">
+<label for="adminEmail">Email address</label>
+<input id="adminEmail" type="email"
+autocomplete="username"
+placeholder="Your administrator email" required>
 
-  <form id="adminLoginForm">
-    <label for="adminEmail">Email address</label>
-    <input
-      id="adminEmail"
-      type="email"
-      autocomplete="username"
-      placeholder="Your administrator email"
-      required
-    >
+<label for="adminPassword">Password</label>
+<input id="adminPassword" type="password"
+autocomplete="current-password"
+placeholder="Your password" required>
 
-    <label for="adminPassword">Password</label>
-    <input
-      id="adminPassword"
-      type="password"
-      autocomplete="current-password"
-      placeholder="Your password"
-      required
-    >
+<button type="submit">Sign in</button>
+</form>
 
-    <button type="submit">Sign in</button>
-  </form>
+<div id="adminSignedIn" hidden>
+<p id="adminWelcome"></p>
+<button type="button" id="signOutButton">Sign out</button>
+</div>
 
-  <div id="adminSignedIn" hidden>
-    <p id="adminWelcome"></p>
-    <button type="button" id="signOutButton">Sign out</button>
-  </div>
-
-  <p id="adminStatus" role="status" aria-live="polite"></p>
+<p id="adminStatus" role="status" aria-live="polite"></p>
 </section>
 
 <section class="add-section" id="theory" hidden>
-  <h2>Add to the Archive</h2>
+<h2>Add to the Archive</h2>
+<p>Preserve a text, its annotations and your interpretation.</p>
 
-  <p>
-    Preserve a text, its annotations and your interpretation.
-  </p>
+<form id="entryForm">
 
-  <form id="entryForm">
+<label for="title">Title</label>
+<input id="title" placeholder="Title of the text" required>
 
-    <label for="title">Title</label>
-    <input id="title" placeholder="Title of the text" required>
+<label for="author">Author / Source</label>
+<input id="author" placeholder="Author / Source">
 
-    <label for="author">Author / Source</label>
-    <input id="author" placeholder="Author / Source">
+<label for="year">Year / Publication</label>
+<input id="year" placeholder="Year / Publication details">
 
-    <label for="year">Year / Publication</label>
-    <input id="year" placeholder="Year / Publication details">
+<label for="photos">Upload photographs (select more than one)</label>
+<input type="file" id="photos" accept="image/*" multiple required>
 
-    <label for="photo">Upload annotated photograph</label>
-    <input
-      type="file"
-      id="photo"
-      accept="image/*"
-      required
-    >
+<p class="help-text">
+You can select several images together. Each image must be
+1.5 MB or smaller. You can select up to 10 images for one entry.
+</p>
 
-    <label for="excerpt">Text excerpt</label>
-    <textarea
-      id="excerpt"
-      placeholder="Text excerpt or passage"
-    ></textarea>
+<div id="photoPreview" aria-live="polite"></div>
 
-    <label for="literary">Literary Theory</label>
-    <textarea
-      id="literary"
-      placeholder="Explain how the text connects with Formalism, Marxism, Feminism, Structuralism, Postcolonialism, etc."
-    ></textarea>
+<label for="excerpt">Text excerpt</label>
+<textarea id="excerpt" placeholder="Text excerpt or passage"></textarea>
 
-    <label for="cultural">Cultural Theory</label>
-    <textarea
-      id="cultural"
-      placeholder="Explain the text through identity, class, gender, power, ideology, representation, culture, etc."
-    ></textarea>
+<label for="literary">Literary Theory</label>
+<textarea id="literary"
+placeholder="Explain how the text connects with Formalism, Marxism, Feminism, Structuralism, Postcolonialism, etc."></textarea>
 
-    <label for="notes">Annotations and Interpretation</label>
-    <textarea
-      id="notes"
-      placeholder="Your annotations, observations and personal interpretation"
-    ></textarea>
+<label for="cultural">Cultural Theory</label>
+<textarea id="cultural"
+placeholder="Explain the text through identity, class, gender, power, ideology, representation, culture, etc."></textarea>
 
-    <label for="tags">Tags</label>
-    <input
-      id="tags"
-      placeholder="Tags (e.g. Feminism, Identity, Power)"
-    >
+<label for="notes">Annotations and Interpretation</label>
+<textarea id="notes"
+placeholder="Your annotations, observations and personal interpretation"></textarea>
 
-    <button type="submit">Add to Archive</button>
-  </form>
+<label for="tags">Tags</label>
+<input id="tags" placeholder="Tags (e.g. Feminism, Identity, Power)">
+
+<button type="submit" id="submitEntryButton">Add to Archive</button>
+</form>
 </section>
 
 <section class="intro" id="about">
-  <h2>About This Archive</h2>
-
-  <p>
-    The Textual Archive is a project that preserves annotated
-    texts, photographs and literary excerpts. It explores texts
-    through literary and cultural theories, examining themes of
-    identity, gender, class, power and representation while
-    documenting critical interpretations and the relation between
-    literature and society.
-  </p>
+<h2>About This Archive</h2>
+<p>
+The Textual Archive is a project that preserves annotated
+texts, photographs and literary excerpts. It explores texts
+through literary and cultural theories, examining themes of
+identity, gender, class, power and representation while
+documenting critical interpretations and the relation between
+literature and society.
+</p>
 </section>
 
 <footer>
-  The Textual Archive | Literary And Cultural Theory Project
+The Textual Archive | Literary And Cultural Theory Project
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -444,14 +202,14 @@ footer {
 /* SUPABASE CONNECTION */
 
 const SUPABASE_URL =
-  "https://cynetrdvadjlogpqhcfo.supabase.co";
+"https://cynetrdvadjlogpqhcfo.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_ise-nBvBTYiT0eqQ9hzGGQ_pcTDlHkj";
+"sb_publishable_ise-nBvBTYiT0eqQ9hzGGQ_pcTDlHkj";
 
 const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
+SUPABASE_URL,
+SUPABASE_PUBLISHABLE_KEY
 );
 
 let entries = [];
@@ -461,479 +219,648 @@ let isArchiveAdmin = false;
 const archiveList = document.getElementById("archiveList");
 const adminStatus = document.getElementById("adminStatus");
 const addSection = document.getElementById("theory");
+const photoInput = document.getElementById("photos");
+const photoPreview = document.getElementById("photoPreview");
 
 function setStatus(message, isError = false) {
-  adminStatus.textContent = message;
-  adminStatus.style.color = isError ? "#a32626" : "#386b42";
+adminStatus.textContent = message;
+adminStatus.style.color = isError ? "#a32626" : "#386b42";
 }
 
+/* MULTIPLE PHOTO PREVIEW */
+
+photoInput.addEventListener("change", () => {
+
+photoPreview.replaceChildren();
+
+const files = Array.from(photoInput.files || []);
+
+if (files.length > 10) {
+alert("Please select no more than 10 photographs for one entry.");
+photoInput.value = "";
+return;
+}
+
+files.forEach(file => {
+
+if (!file.type.startsWith("image/")) return;
+
+const image = document.createElement("img");
+image.alt = file.name;
+image.src = URL.createObjectURL(file);
+
+image.onload = () => URL.revokeObjectURL(image.src);
+
+photoPreview.appendChild(image);
+
+});
+
+});
+
+/* IMAGE URL / STORAGE HELPERS */
+
+function safeFileName(name) {
+return name.normalize("NFKD")
+.replace(/[^a-zA-Z0-9._-]/g, "_")
+.slice(-100) || "image";
+}
+
+function storagePathFromPublicUrl(url) {
+
+const marker = "/storage/v1/object/public/archive-images/";
+const index = (url || "").indexOf(marker);
+
+if (index < 0) return null;
+
+try {
+return decodeURIComponent(url.slice(index + marker.length));
+} catch {
+return url.slice(index + marker.length);
+}
+
+}
+
+function getEntryPhotos(entry) {
+
+// Supports the new photos array and old single-photo records.
+
+if (Array.isArray(entry.photos)) {
+return entry.photos.filter(Boolean);
+}
+
+if (typeof entry.photos === "string") {
+try {
+const parsed = JSON.parse(entry.photos);
+if (Array.isArray(parsed)) return parsed.filter(Boolean);
+} catch (error) {
+console.warn("Could not parse entry photos", error);
+}
+}
+
+return entry.photo ? [entry.photo] : [];
+
+}
 
 /* LOAD SHARED ARCHIVE ENTRIES */
 
 async function loadEntries() {
 
-  archiveList.innerHTML = "<p>Loading archive...</p>";
+archiveList.innerHTML = "<p>Loading archive...</p>";
 
-  const { data, error } = await supabaseClient
-    .from("archive_entries")
-    .select("*")
-    .order("created_at", { ascending: false });
+const { data, error } = await supabaseClient
+.from("archive_entries")
+.select("*")
+.order("created_at", { ascending: false });
 
-  if (error) {
-    console.error("Archive loading error:", error);
+if (error) {
 
-    archiveList.innerHTML =
-      "<p>Could not load the archive. Please refresh or try again later.</p>";
+console.error("Archive loading error:", error);
 
-    return;
-  }
+archiveList.innerHTML =
+"<p>Could not load the archive. Please refresh or try again later.</p>";
 
-  entries = data || [];
-
-  displayEntries();
+return;
 }
 
+entries = data || [];
+displayEntries();
+
+}
 
 /* DISPLAY ARCHIVE ENTRIES */
 
 function displayEntries() {
 
-  const query = document
-    .getElementById("search")
-    .value.toLowerCase()
-    .trim();
+const query = document.getElementById("search")
+.value.toLowerCase().trim();
 
-  archiveList.innerHTML = "";
+archiveList.replaceChildren();
 
-  const filtered = entries.filter(entry =>
-    [
-      entry.title,
-      entry.author,
-      entry.literary,
-      entry.cultural,
-      entry.tags
-    ]
-    .join(" ")
-    .toLowerCase()
-    .includes(query)
-  );
+const filtered = entries.filter(entry =>
 
-  if (filtered.length === 0) {
+[
+entry.title,
+entry.author,
+entry.literary,
+entry.cultural,
+entry.tags,
+entry.excerpt,
+entry.notes
+]
+.join(" ")
+.toLowerCase()
+.includes(query)
 
-    archiveList.innerHTML =
-      "<p>No entries found. The archive is waiting for its first shared text.</p>";
+);
 
-    return;
-  }
+if (!filtered.length) {
 
-  filtered.forEach(entry => {
+const empty = document.createElement("p");
 
-    const card = document.createElement("article");
-    card.className = "entry";
+empty.textContent =
+"No entries found. The archive is waiting for its first shared text.";
 
-    if (entry.photo) {
+archiveList.appendChild(empty);
+return;
 
-      const image = document.createElement("img");
-
-      image.src = entry.photo;
-      image.alt = "Annotated text: " + (entry.title || "");
-      image.loading = "lazy";
-
-      card.appendChild(image);
-    }
-
-    const heading = document.createElement("h3");
-
-    heading.textContent = entry.title || "Untitled";
-
-    card.appendChild(heading);
-
-    const content = document.createElement("div");
-
-    function addText(label, value) {
-
-      if (!value) return;
-
-      const p = document.createElement("p");
-      const strong = document.createElement("strong");
-
-      strong.textContent = label + ": ";
-
-      p.appendChild(strong);
-      p.appendChild(document.createTextNode(value));
-
-      content.appendChild(p);
-    }
-
-    addText("Author", entry.author);
-    addText("Publication", entry.year);
-    addText("Excerpt", entry.excerpt);
-    addText("Literary Theory", entry.literary);
-    addText("Cultural Theory", entry.cultural);
-    addText("Annotations", entry.notes);
-    addText("Tags", entry.tags);
-
-    card.appendChild(content);
-
-    if (isArchiveAdmin) {
-
-      const remove = document.createElement("button");
-
-      remove.className = "delete";
-      remove.textContent = "Delete Entry";
-
-      remove.addEventListener("click", () => deleteEntry(entry));
-
-      card.appendChild(remove);
-    }
-
-    archiveList.appendChild(card);
-  });
 }
 
+filtered.forEach(entry => {
+
+const card = document.createElement("article");
+card.className = "entry";
+
+const photos = getEntryPhotos(entry);
+
+if (photos.length) {
+
+const gallery = document.createElement("div");
+gallery.className = "photo-gallery";
+
+photos.forEach((url, index) => {
+
+const link = document.createElement("a");
+
+link.href = url;
+link.target = "_blank";
+link.rel = "noopener noreferrer";
+
+link.setAttribute(
+"aria-label",
+"Open photograph " + (index + 1)
+);
+
+const image = document.createElement("img");
+
+image.src = url;
+image.alt =
+"Photograph " + (index + 1) +
+" for " + (entry.title || "archive entry");
+
+image.loading = "lazy";
+
+link.appendChild(image);
+gallery.appendChild(link);
+
+});
+
+card.appendChild(gallery);
+
+if (photos.length > 1) {
+
+const count = document.createElement("p");
+
+count.className = "photo-count";
+count.textContent = photos.length + " photographs";
+
+card.appendChild(count);
+
+}
+
+}
+
+const heading = document.createElement("h3");
+
+heading.textContent = entry.title || "Untitled";
+
+card.appendChild(heading);
+
+const content = document.createElement("div");
+
+function addText(label, value) {
+
+if (value === null || value === undefined || value === "") return;
+
+const p = document.createElement("p");
+const strong = document.createElement("strong");
+
+strong.textContent = label + ": ";
+
+p.appendChild(strong);
+p.appendChild(document.createTextNode(String(value)));
+
+content.appendChild(p);
+
+}
+
+addText("Author", entry.author);
+addText("Publication", entry.year);
+addText("Excerpt", entry.excerpt);
+addText("Literary Theory", entry.literary);
+addText("Cultural Theory", entry.cultural);
+addText("Annotations", entry.notes);
+addText("Tags", entry.tags);
+
+card.appendChild(content);
+
+if (isArchiveAdmin) {
+
+const remove = document.createElement("button");
+
+remove.className = "delete";
+remove.textContent = "Delete Entry";
+
+remove.addEventListener("click", () => deleteEntry(entry));
+
+card.appendChild(remove);
+
+}
+
+archiveList.appendChild(card);
+
+});
+
+}
 
 /* CHECK ADMINISTRATOR LOGIN AND PERMISSIONS */
 
 async function refreshAdminState() {
 
-  const {
-    data: sessionData,
-    error: sessionError
-  } = await supabaseClient.auth.getSession();
+const {
+data: sessionData,
+error: sessionError
+} = await supabaseClient.auth.getSession();
 
-  if (sessionError) console.error(sessionError);
+if (sessionError) console.error(sessionError);
 
-  currentUser = sessionData?.session?.user || null;
+currentUser = sessionData?.session?.user || null;
 
-  isArchiveAdmin = false;
+isArchiveAdmin = false;
 
-  if (currentUser) {
+if (currentUser) {
 
-    const { data, error } = await supabaseClient
-      .from("archive_admins")
-      .select("user_id")
-      .eq("user_id", currentUser.id)
-      .maybeSingle();
+const { data, error } = await supabaseClient
+.from("archive_admins")
+.select("user_id")
+.eq("user_id", currentUser.id)
+.maybeSingle();
 
-    if (error) {
+if (error) {
 
-      console.error("Administrator check error:", error);
+console.error("Administrator check error:", error);
 
-      setStatus(
-        "Signed in, but administrator access could not be verified. Check the archive_admins table policies.",
-        true
-      );
+setStatus(
+"Signed in, but administrator access could not be verified. Check the archive_admins table policies.",
+true
+);
 
-    } else {
+} else {
 
-      isArchiveAdmin = !!data;
-    }
-  }
+isArchiveAdmin = !!data;
 
-  document.getElementById("adminLoginForm").hidden =
-    !!currentUser;
-
-  document.getElementById("adminSignedIn").hidden =
-    !currentUser;
-
-  addSection.hidden = !isArchiveAdmin;
-
-  if (currentUser && isArchiveAdmin) {
-
-    document.getElementById("adminWelcome").textContent =
-      "Signed in as " + currentUser.email +
-      ". You can now add and delete archive entries.";
-
-    setStatus("Administrator access confirmed.");
-
-  } else if (currentUser && !isArchiveAdmin) {
-
-    document.getElementById("adminWelcome").textContent =
-      "Signed in as " + currentUser.email +
-      ", but this account is not listed as an archive administrator.";
-
-    setStatus(
-      "This account does not have archive administrator permission.",
-      true
-    );
-
-  } else {
-
-    document.getElementById("adminWelcome").textContent = "";
-
-    setStatus(
-      "You are browsing as a visitor. Sign in to manage the archive."
-    );
-  }
-
-  displayEntries();
 }
 
+}
+
+document.getElementById("adminLoginForm").hidden = !!currentUser;
+document.getElementById("adminSignedIn").hidden = !currentUser;
+
+addSection.hidden = !isArchiveAdmin;
+
+if (currentUser && isArchiveAdmin) {
+
+document.getElementById("adminWelcome").textContent =
+"Signed in as " + currentUser.email +
+". You can now add and delete archive entries.";
+
+setStatus("Administrator access confirmed.");
+
+} else if (currentUser && !isArchiveAdmin) {
+
+document.getElementById("adminWelcome").textContent =
+"Signed in as " + currentUser.email +
+", but this account is not listed as an archive administrator.";
+
+setStatus(
+"This account does not have archive administrator permission.",
+true
+);
+
+} else {
+
+document.getElementById("adminWelcome").textContent = "";
+
+setStatus(
+"You are browsing as a visitor. Sign in to manage the archive."
+);
+
+}
+
+displayEntries();
+
+}
 
 /* ADMIN LOGIN */
 
-document
-  .getElementById("adminLoginForm")
-  .addEventListener("submit", async event => {
+document.getElementById("adminLoginForm")
+.addEventListener("submit", async event => {
 
-    event.preventDefault();
+event.preventDefault();
 
-    setStatus("Signing in...");
+setStatus("Signing in...");
 
-    const email =
-      document.getElementById("adminEmail").value.trim();
+const email =
+document.getElementById("adminEmail").value.trim();
 
-    const password =
-      document.getElementById("adminPassword").value;
+const password =
+document.getElementById("adminPassword").value;
 
-    const { error } = await supabaseClient.auth
-      .signInWithPassword({ email, password });
+const { error } = await supabaseClient.auth
+.signInWithPassword({ email, password });
 
-    document.getElementById("adminPassword").value = "";
+document.getElementById("adminPassword").value = "";
 
-    if (error) {
+if (error) {
 
-      setStatus("Sign-in failed: " + error.message, true);
+setStatus("Sign-in failed: " + error.message, true);
+return;
 
-      return;
-    }
+}
 
-    await refreshAdminState();
+await refreshAdminState();
 
-    if (!isArchiveAdmin) {
+if (!isArchiveAdmin) {
 
-      await supabaseClient.auth.signOut();
+await supabaseClient.auth.signOut();
+await refreshAdminState();
 
-      await refreshAdminState();
-    }
-  });
+}
 
+});
 
 /* ADMIN LOGOUT */
 
-document
-  .getElementById("signOutButton")
-  .addEventListener("click", async () => {
+document.getElementById("signOutButton")
+.addEventListener("click", async () => {
 
-    const { error } = await supabaseClient.auth.signOut();
+const { error } = await supabaseClient.auth.signOut();
 
-    if (error) {
-      setStatus("Sign-out failed: " + error.message, true);
-    }
-
-    await refreshAdminState();
-  });
-
-
-/* IMAGE FILE MANAGEMENT */
-
-function safeFileName(name) {
-
-  return name
-    .normalize("NFKD")
-    .replace(/[^a-zA-Z0-9._-]/g, "_")
-    .slice(-100) || "image";
+if (error) {
+setStatus("Sign-out failed: " + error.message, true);
 }
 
-function storagePathFromPublicUrl(url) {
+await refreshAdminState();
 
-  const marker =
-    "/storage/v1/object/public/archive-images/";
+});
 
-  const index = (url || "").indexOf(marker);
-
-  return index >= 0
-    ? decodeURIComponent(url.slice(index + marker.length))
-    : null;
-}
-
-
-/* DELETE ARCHIVE ENTRY */
+/* DELETE ENTRY AND ITS PHOTOGRAPHS */
 
 async function deleteEntry(entry) {
 
-  if (!confirm("Delete this archive entry?")) return;
-
-  const { error } = await supabaseClient
-    .from("archive_entries")
-    .delete()
-    .eq("id", entry.id);
-
-  if (error) {
-
-    alert("Could not delete this entry: " + error.message);
-
-    return;
-  }
-
-  const imagePath = storagePathFromPublicUrl(entry.photo);
-
-  if (imagePath) {
-
-    const { error: storageError } = await supabaseClient.storage
-      .from("archive-images")
-      .remove([imagePath]);
-
-    if (storageError) {
-      console.warn(
-        "Entry deleted, but image cleanup failed:",
-        storageError
-      );
-    }
-  }
-
-  await loadEntries();
+if (!confirm("Delete this archive entry and its stored photographs?")) {
+return;
 }
 
+const { error } = await supabaseClient
+.from("archive_entries")
+.delete()
+.eq("id", entry.id);
 
-/* UPLOAD NEW TEXT AND PHOTOGRAPH */
+if (error) {
 
-document
-  .getElementById("entryForm")
-  .addEventListener("submit", async event => {
+alert("Could not delete this entry: " + error.message);
+return;
 
-    event.preventDefault();
+}
 
-    if (!currentUser || !isArchiveAdmin) {
+const paths = getEntryPhotos(entry)
+.map(storagePathFromPublicUrl)
+.filter(Boolean);
 
-      alert(
-        "Please sign in with the archive administrator account first."
-      );
+if (paths.length) {
 
-      return;
-    }
+const { error: storageError } = await supabaseClient.storage
+.from("archive-images")
+.remove(paths);
 
-    const file =
-      document.getElementById("photo").files[0];
+if (storageError) {
 
-    if (!file || !file.type.startsWith("image/")) {
+console.warn(
+"Entry deleted, but some image cleanup failed:",
+storageError
+);
 
-      alert("Please select a valid image.");
+}
 
-      return;
-    }
+}
 
-    if (file.size > 1500000) {
+await loadEntries();
 
-      alert("Please choose an image smaller than 1.5 MB.");
+}
 
-      return;
-    }
+/* UPLOAD MULTIPLE PHOTOGRAPHS AND SAVE ENTRY */
 
-    const submitButton = event.submitter;
+document.getElementById("entryForm")
+.addEventListener("submit", async event => {
 
-    submitButton.disabled = true;
-    submitButton.textContent = "Uploading...";
+event.preventDefault();
 
-    try {
+if (!currentUser || !isArchiveAdmin) {
 
-      const filePath =
-        currentUser.id + "/" +
-        Date.now() + "-" +
-        safeFileName(file.name);
+alert(
+"Please sign in with the archive administrator account first."
+);
 
-      const { error: uploadError } = await supabaseClient.storage
-        .from("archive-images")
-        .upload(filePath, file, {
-          cacheControl: "3600",
-          upsert: false
-        });
+return;
 
-      if (uploadError) {
-        throw new Error(
-          "Image upload failed: " + uploadError.message
-        );
-      }
+}
 
-      const { data: publicUrlData } =
-        supabaseClient.storage
-          .from("archive-images")
-          .getPublicUrl(filePath);
+const files = Array.from(photoInput.files || []);
 
-      const entry = {
+if (!files.length) {
 
-        title: document.getElementById("title").value.trim(),
+alert("Please select at least one photograph.");
+return;
 
-        author: document.getElementById("author").value.trim(),
+}
 
-        year: document.getElementById("year").value.trim(),
+if (files.length > 10) {
 
-        photo: publicUrlData.publicUrl,
+alert("Please select no more than 10 photographs.");
+return;
 
-        excerpt: document.getElementById("excerpt").value.trim(),
+}
 
-        literary: document.getElementById("literary").value.trim(),
+for (const file of files) {
 
-        cultural: document.getElementById("cultural").value.trim(),
+if (!file.type.startsWith("image/")) {
 
-        notes: document.getElementById("notes").value.trim(),
+alert("One of the selected files is not an image.");
+return;
 
-        tags: document.getElementById("tags").value.trim()
-      };
+}
 
-      const { error: insertError } = await supabaseClient
-        .from("archive_entries")
-        .insert(entry);
+if (file.size > 1500000) {
 
-      if (insertError) {
+alert(
+"Each photograph must be smaller than 1.5 MB: " + file.name
+);
 
-        await supabaseClient.storage
-          .from("archive-images")
-          .remove([filePath]);
+return;
 
-        throw new Error(
-          "Could not save the archive entry: " +
-          insertError.message
-        );
-      }
+}
 
-      document.getElementById("entryForm").reset();
+}
 
-      await loadEntries();
+const submitButton =
+document.getElementById("submitEntryButton");
 
-      alert(
-        "Your text has been added to the shared archive!"
-      );
+submitButton.disabled = true;
+submitButton.textContent = "Uploading photographs...";
 
-      document
-        .getElementById("archive")
-        .scrollIntoView({ behavior: "smooth" });
+const uploadedPaths = [];
+const photoUrls = [];
 
-    } catch (error) {
+try {
 
-      alert(error.message);
+for (let i = 0; i < files.length; i++) {
 
-    } finally {
+const file = files[i];
 
-      submitButton.disabled = false;
-      submitButton.textContent = "Add to Archive";
-    }
-  });
+const filePath =
+currentUser.id + "/" +
+Date.now() + "-" +
+i + "-" +
+safeFileName(file.name);
 
+const { error: uploadError } = await supabaseClient.storage
+.from("archive-images")
+.upload(filePath, file, {
+cacheControl: "3600",
+upsert: false,
+contentType: file.type
+});
+
+if (uploadError) {
+
+throw new Error(
+"Image upload failed for " +
+file.name + ": " + uploadError.message
+);
+
+}
+
+uploadedPaths.push(filePath);
+
+const { data: publicUrlData } =
+supabaseClient.storage
+.from("archive-images")
+.getPublicUrl(filePath);
+
+if (!publicUrlData?.publicUrl) {
+
+throw new Error(
+"Could not create a public URL for " + file.name
+);
+
+}
+
+photoUrls.push(publicUrlData.publicUrl);
+
+}
+
+const entry = {
+
+title: document.getElementById("title").value.trim(),
+
+author: document.getElementById("author").value.trim(),
+
+year: document.getElementById("year").value.trim(),
+
+photos: photoUrls,
+
+excerpt: document.getElementById("excerpt").value.trim(),
+
+literary: document.getElementById("literary").value.trim(),
+
+cultural: document.getElementById("cultural").value.trim(),
+
+notes: document.getElementById("notes").value.trim(),
+
+tags: document.getElementById("tags").value.trim()
+
+};
+
+const { error: insertError } = await supabaseClient
+.from("archive_entries")
+.insert(entry);
+
+if (insertError) {
+
+throw new Error(
+"Could not save the archive entry: " +
+insertError.message
+);
+
+}
+
+document.getElementById("entryForm").reset();
+
+photoPreview.replaceChildren();
+
+await loadEntries();
+
+alert(
+"Your text and " +
+photoUrls.length +
+" photograph(s) have been added to the shared archive!"
+);
+
+document.getElementById("archive")
+.scrollIntoView({ behavior: "smooth" });
+
+} catch (error) {
+
+console.error(error);
+
+if (uploadedPaths.length) {
+
+const { error: cleanupError } = await supabaseClient.storage
+.from("archive-images")
+.remove(uploadedPaths);
+
+if (cleanupError) {
+console.warn(
+"Could not clean up uploaded files after failure:",
+cleanupError
+);
+}
+
+}
+
+alert(
+error.message ||
+"Something went wrong while saving the archive entry."
+);
+
+} finally {
+
+submitButton.disabled = false;
+submitButton.textContent = "Add to Archive";
+
+}
+
+});
 
 /* SEARCH */
 
-document
-  .getElementById("search")
-  .addEventListener("input", displayEntries);
-
+document.getElementById("search")
+.addEventListener("input", displayEntries);
 
 /* AUTHENTICATION STATE */
 
 supabaseClient.auth.onAuthStateChange(() => {
 
-  setTimeout(refreshAdminState, 0);
+setTimeout(refreshAdminState, 0);
 
 });
-
 
 /* START THE ARCHIVE */
 
 (async function initializeArchive() {
 
-  await loadEntries();
-
-  await refreshAdminState();
+await loadEntries();
+await refreshAdminState();
 
 })();
 
