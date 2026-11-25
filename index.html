@@ -3,866 +3,1172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Textual Archive</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Textual Archive</title>
 
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:#f7f3ee;color:#21191b;font-family:Georgia,serif}
-header{padding:50px 8%;background:#21191b;color:#f7f3ee;border-bottom:4px solid #b69a60}
-header h1{font-size:42px;letter-spacing:2px;color:#fff}
-header p{margin-top:12px;color:#d8c9c2;font-style:italic}
-nav{padding:18px 8%;background:#70263d;display:flex;gap:30px;flex-wrap:wrap}
-nav a{color:#fff;text-decoration:none;font-size:15px;transition:color .3s}
-nav a:hover{color:#d9bd7a}
-.intro{padding:65px 8%;max-width:1000px}
-.intro h2{font-size:30px;margin-bottom:18px;color:#70263d}
-.intro p{line-height:1.8;color:#55484a}
-.container{padding:25px 8% 60px}
-.section-title{font-size:28px;margin-bottom:25px;border-bottom:2px solid #b69a60;padding-bottom:12px;color:#70263d}
-.search{width:100%;padding:14px;border:1px solid #c9b7ad;background:#fff;font-family:inherit;font-size:15px;margin-bottom:25px;color:#21191b}
-.search:focus,form input:focus,form textarea:focus{outline:none;border-color:#70263d;box-shadow:0 0 4px rgba(112,38,61,.2)}
-.archive{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:25px}
-.entry{background:#fff;padding:20px;border:1px solid #d8c7b5;border-top:4px solid #70263d;box-shadow:0 4px 12px rgba(33,25,27,.06);transition:transform .3s,box-shadow .3s;overflow-wrap:anywhere}
-.entry:hover{transform:translateY(-4px);box-shadow:0 7px 18px rgba(33,25,27,.12)}
-.entry h3{font-size:22px;margin-bottom:8px;color:#70263d}
-.entry p{line-height:1.7;font-size:14px;margin:9px 0;color:#55484a;white-space:pre-wrap}
-.entry strong{color:#21191b}
-.photo-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:9px;margin-bottom:16px}
-.photo-gallery a{display:block;overflow:hidden;background:#eee5dc;border:1px solid #d8c7b5}
-.photo-gallery img{display:block;width:100%;height:150px;object-fit:cover;transition:transform .25s}
-.photo-gallery a:hover img{transform:scale(1.04)}
-.photo-count{font-size:12px;color:#76666a;margin:0 0 10px}
-.add-section{background:#eee5dc;padding:45px 8%;border-top:1px solid #d8c7b5;border-bottom:1px solid #d8c7b5}
-.add-section h2{margin-bottom:15px;color:#70263d;font-size:28px}
-.add-section p{color:#55484a;margin-bottom:15px}
-form{max-width:750px}
-form label{display:block;margin-top:15px;color:#21191b}
-form input,form textarea{width:100%;padding:13px;margin:9px 0;border:1px solid #c9b7ad;background:#fff;font-family:inherit;font-size:14px;color:#21191b}
-form textarea{min-height:100px;resize:vertical}
-input[type=file]{padding:10px}
-.help-text{font-size:13px;color:#66585a;line-height:1.5;margin:0 0 8px}
-#photoPreview{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:10px;margin:10px 0}
-#photoPreview img{width:100%;height:100px;object-fit:cover;border:1px solid #c9b7ad}
-button{background:#70263d;color:#fff;padding:13px 22px;border:0;cursor:pointer;margin-top:12px;font-family:inherit;font-size:14px;transition:background .3s}
-button:hover{background:#21191b}
-button:disabled{opacity:.6;cursor:not-allowed}
-.delete{background:#21191b;border-left:3px solid #b69a60}
-.delete:hover{background:#70263d}
-.admin-area{background:#eee5dc;padding:28px 8%;border-top:1px solid #d8c7b5}
-.admin-area h2{color:#70263d;font-size:24px;margin-bottom:12px}
-.admin-area p{color:#55484a;margin-bottom:12px;line-height:1.6}
-.admin-area form{max-width:480px}
-#adminStatus{margin-top:10px;font-size:14px}
-footer{background:#21191b;color:#e8ded2;text-align:center;padding:30px;font-size:13px;border-top:3px solid #b69a60}
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-@media(max-width:600px){
- header{padding:35px 8%}
- header h1{font-size:30px}
- .intro{padding:40px 8%}
- nav{gap:18px}
- .photo-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-</style>
+  <style>
+    :root {
+      --burgundy: #641c32;
+      --dark-burgundy: #42101f;
+      --black: #171313;
+      --gold: #b18a45;
+      --ivory: #faf7f0;
+      --paper: #fffdf8;
+      --muted: #766d68;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--ivory);
+      color: var(--black);
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    header {
+      background: var(--black);
+      color: var(--ivory);
+      text-align: center;
+      padding: 38px 20px;
+      border-bottom: 4px solid var(--gold);
+    }
+
+    header h1 {
+      margin: 0;
+      color: #fffaf0;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      letter-spacing: 2px;
+    }
+
+    header p {
+      margin-bottom: 0;
+      color: #d8c9b9;
+      font-style: italic;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 28px 20px 60px;
+    }
+
+    h2, h3 {
+      color: var(--burgundy);
+    }
+
+    .intro {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 30px;
+      line-height: 1.7;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 24px 0;
+    }
+
+    input, textarea, button {
+      font: inherit;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #c9bdb2;
+      background: white;
+      border-radius: 3px;
+      color: var(--black);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .search-input {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    button {
+      border: 0;
+      padding: 11px 18px;
+      background: var(--burgundy);
+      color: white;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    button:hover {
+      background: var(--dark-burgundy);
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    button.secondary {
+      background: #514744;
+    }
+
+    button.danger {
+      background: #8c2525;
+    }
+
+    .section-heading {
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 10px;
+      margin-top: 36px;
+    }
+
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 28px;
+      margin-top: 25px;
+    }
+
+    .book-entry {
+      cursor: pointer;
+      text-align: center;
+      min-width: 0;
+    }
+
+    .book-cover {
+      min-height: 255px;
+      padding: 22px 15px;
+      background: linear-gradient(135deg, #70253b, #35101e);
+      color: #fff8e9;
+      border-left: 9px solid #2b0c17;
+      border-right: 2px solid var(--gold);
+      box-shadow: 5px 7px 12px #0003;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform .2s, box-shadow .2s;
+      overflow-wrap: anywhere;
+    }
+
+    .book-entry:hover .book-cover {
+      transform: translateY(-5px);
+      box-shadow: 7px 12px 16px #0004;
+    }
+
+    .book-cover::before,
+    .book-cover::after {
+      content: "";
+      width: 55%;
+      border-top: 1px solid var(--gold);
+    }
+
+    .book-cover::before {
+      margin-bottom: 18px;
+    }
+
+    .book-cover::after {
+      margin-top: 18px;
+    }
+
+    .book-title {
+      font-size: 1.25rem;
+      line-height: 1.4;
+    }
+
+    .book-author {
+      font-size: .9rem;
+      color: #e7d6b6;
+      margin-top: 12px;
+      font-style: italic;
+    }
+
+    .book-year {
+      font-size: .85rem;
+      color: #e7d6b6;
+      margin-top: 8px;
+    }
+
+    .book-caption {
+      margin-top: 12px;
+      line-height: 1.4;
+      color: var(--muted);
+    }
+
+    .panel {
+      background: var(--paper);
+      border: 1px solid #e2d8cb;
+      padding: 22px;
+      margin-top: 28px;
+      box-shadow: 0 2px 8px #0000000a;
+    }
+
+    .admin-panel {
+      display: none;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--dark-burgundy);
+      font-weight: bold;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field small {
+      display: block;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .photo-section {
+      border: 1px solid #dfd2c4;
+      padding: 16px;
+      margin: 18px 0;
+      background: #fffefa;
+    }
+
+    .photo-section h3 {
+      margin-top: 0;
+    }
+
+    .photo-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .photo-gallery img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border: 1px solid #d6c8b8;
+      cursor: pointer;
+    }
+
+    .status {
+      margin: 12px 0;
+      color: var(--burgundy);
+      white-space: pre-wrap;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    dialog {
+      width: min(850px, 94vw);
+      max-height: 90vh;
+      overflow-y: auto;
+      border: 1px solid var(--gold);
+      padding: 28px;
+      background: var(--paper);
+      color: var(--black);
+    }
+
+    dialog::backdrop {
+      background: #160b0dcc;
+    }
+
+    .dialog-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      border-bottom: 1px solid var(--gold);
+      padding-bottom: 12px;
+    }
+
+    .dialog-top h2 {
+      margin: 0;
+    }
+
+    .entry-content {
+      line-height: 1.75;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .entry-block {
+      margin: 22px 0;
+    }
+
+    .entry-block h3 {
+      border-bottom: 1px solid #e3d7c8;
+      padding-bottom: 6px;
+    }
+
+    .tags {
+      color: var(--burgundy);
+      font-style: italic;
+    }
+
+    .admin-entry {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+      padding: 12px 0;
+      border-bottom: 1px solid #e3d7c8;
+    }
+
+    footer {
+      background: var(--black);
+      color: #d8c9b9;
+      text-align: center;
+      padding: 25px;
+      border-top: 3px solid var(--gold);
+    }
+
+    @media (max-width: 650px) {
+      main {
+        padding: 20px 14px 45px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .field.full {
+        grid-column: auto;
+      }
+
+      .toolbar {
+        flex-direction: column;
+      }
+
+      .book-cover {
+        min-height: 220px;
+      }
+
+      dialog {
+        padding: 18px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <header>
-<h1>THE TEXTUAL ARCHIVE</h1>
-<p>A collection of texts, annotations and interpretations.</p>
+  <h1>The Textual Archive</h1>
+  <p>A collection of texts, annotations and cultural reflections</p>
 </header>
 
-<nav>
-<a href="#home">Home</a>
-<a href="#archive">Archive</a>
-<a href="#theory">Add to Archive</a>
-<a href="#about">About</a>
-<a href="#admin">Admin</a>
-</nav>
+<main>
 
-<section class="intro" id="home">
-<h2>Every Text Holds Multiple Meanings.</h2>
-<p>
-Welcome to The Textual Archive, a digital collection dedicated
-to exploring texts through annotation, literary interpretation
-and cultural analysis. This archive brings together written
-texts, visual annotations and critical perspectives to examine
-how meaning is created, interpreted and understood.
-</p>
-</section>
+  <section class="intro">
+    <h2>Explore the Archive</h2>
+    <p>
+      Browse the collection of texts and their literary and cultural interpretations.
+      Select any book to explore its excerpts, annotations, notes and photographs.
+    </p>
+  </section>
 
-<section class="container" id="archive">
-<h2 class="section-title">The Archive</h2>
-<input class="search" id="search"
-placeholder="Search by title, author or theory..."
-aria-label="Search archive">
-<div class="archive" id="archiveList">
-<p>Loading archive...</p>
-</div>
-</section>
+  <!-- SEARCH -->
+  <div class="toolbar">
+    <input
+      id="searchInput"
+      class="search-input"
+      type="text"
+      placeholder="Search by title, author, year, theory or tag..."
+      aria-label="Search archive"
+    >
+    <button id="refreshButton" type="button">Refresh Archive</button>
+  </div>
 
-<section class="admin-area" id="admin">
-<h2>Archive Administrator</h2>
-<p>
-Sign in with the email address and password already registered
-in Supabase. Visitors can browse the archive without signing in.
-</p>
+  <!-- PUBLIC ARCHIVE -->
+  <h2 class="section-heading">The Collection</h2>
+  <p id="archiveStatus" class="status" role="status">Loading archive...</p>
+  <div id="archiveGrid" class="archive-grid"></div>
 
-<form id="adminLoginForm">
-<label for="adminEmail">Email address</label>
-<input id="adminEmail" type="email"
-autocomplete="username"
-placeholder="Your administrator email" required>
+  <!-- ADMIN LOGIN -->
+  <section class="panel" id="loginPanel">
+    <h2>Administrator Access</h2>
+    <p class="muted">
+      Sign in to manage the archive. Visitors do not need an account to browse.
+    </p>
 
-<label for="adminPassword">Password</label>
-<input id="adminPassword" type="password"
-autocomplete="current-password"
-placeholder="Your password" required>
+    <form id="loginForm">
+      <div class="form-grid">
+        <div class="field">
+          <label for="adminEmail">Email</label>
+          <input
+            id="adminEmail"
+            type="email"
+            required
+            autocomplete="username"
+          >
+        </div>
 
-<button type="submit">Sign in</button>
-</form>
+        <div class="field">
+          <label for="adminPassword">Password</label>
+          <input
+            id="adminPassword"
+            type="password"
+            required
+            autocomplete="current-password"
+          >
+        </div>
+      </div>
 
-<div id="adminSignedIn" hidden>
-<p id="adminWelcome"></p>
-<button type="button" id="signOutButton">Sign out</button>
-</div>
+      <button type="submit">Sign In</button>
+    </form>
 
-<p id="adminStatus" role="status" aria-live="polite"></p>
-</section>
+    <p id="loginStatus" class="status" role="status"></p>
+  </section>
 
-<section class="add-section" id="theory" hidden>
-<h2>Add to the Archive</h2>
-<p>Preserve a text, its annotations and your interpretation.</p>
+  <!-- ADMIN DASHBOARD -->
+  <section id="adminPanel" class="panel admin-panel">
 
-<form id="entryForm">
+    <h2>Administrator Dashboard</h2>
+    <p>You are signed in as an administrator.</p>
 
-<label for="title">Title</label>
-<input id="title" placeholder="Title of the text" required>
+    <button id="logoutButton" class="secondary" type="button">
+      Sign Out
+    </button>
 
-<label for="author">Author / Source</label>
-<input id="author" placeholder="Author / Source">
+    <h2 class="section-heading">Add a New Archive Entry</h2>
 
-<label for="year">Year / Publication</label>
-<input id="year" placeholder="Year / Publication details">
+    <form id="entryForm">
 
-<label for="photos">Upload photographs (select more than one)</label>
-<input type="file" id="photos" accept="image/*" multiple required>
+      <div class="form-grid">
 
-<p class="help-text">
-You can select several images together. Each image must be
-1.5 MB or smaller. You can select up to 10 images for one entry.
-</p>
+        <div class="field">
+          <label for="title">Title *</label>
+          <input id="title" type="text" required>
+        </div>
 
-<div id="photoPreview" aria-live="polite"></div>
+        <div class="field">
+          <label for="author">Author / Source</label>
+          <input id="author" type="text">
+        </div>
 
-<label for="excerpt">Text excerpt</label>
-<textarea id="excerpt" placeholder="Text excerpt or passage"></textarea>
+        <div class="field">
+          <label for="year">Year / Publication</label>
+          <input id="year" type="text">
+        </div>
 
-<label for="literary">Literary Theory</label>
-<textarea id="literary"
-placeholder="Explain how the text connects with Formalism, Marxism, Feminism, Structuralism, Postcolonialism, etc."></textarea>
+        <div class="field">
+          <label for="tags">Tags</label>
+          <input
+            id="tags"
+            type="text"
+            placeholder="Separate tags with commas"
+          >
+        </div>
 
-<label for="cultural">Cultural Theory</label>
-<textarea id="cultural"
-placeholder="Explain the text through identity, class, gender, power, ideology, representation, culture, etc."></textarea>
+        <div class="field full">
+          <label for="excerpt">Text Excerpt</label>
+          <textarea id="excerpt"></textarea>
+        </div>
 
-<label for="notes">Annotations and Interpretation</label>
-<textarea id="notes"
-placeholder="Your annotations, observations and personal interpretation"></textarea>
+        <div class="field full">
+          <label for="literary">Literary Theory</label>
+          <textarea id="literary"></textarea>
+        </div>
 
-<label for="tags">Tags</label>
-<input id="tags" placeholder="Tags (e.g. Feminism, Identity, Power)">
+        <div class="field full">
+          <label for="cultural">Cultural Theory</label>
+          <textarea id="cultural"></textarea>
+        </div>
 
-<button type="submit" id="submitEntryButton">Add to Archive</button>
-</form>
-</section>
+        <div class="field full">
+          <label for="notes">Annotations and Interpretation</label>
+          <textarea id="notes"></textarea>
+        </div>
 
-<section class="intro" id="about">
-<h2>About This Archive</h2>
-<p>
-The Textual Archive is a project that preserves annotated
-texts, photographs and literary excerpts. It explores texts
-through literary and cultural theories, examining themes of
-identity, gender, class, power and representation while
-documenting critical interpretations and the relation between
-literature and society.
-</p>
-</section>
+      </div>
+
+      <!-- FIRST PHOTO SECTION -->
+      <div class="photo-section">
+        <h3>Text Annotation Photographs</h3>
+        <p class="muted">
+          Upload multiple photographs related to text annotations.
+        </p>
+        <input
+          id="annotationPhotos"
+          type="file"
+          accept="image/*"
+          multiple
+        >
+        <small>You can select several photographs at once.</small>
+      </div>
+
+      <!-- SECOND PHOTO SECTION -->
+      <div class="photo-section">
+        <h3>Class Notes Photographs</h3>
+        <p class="muted">
+          Upload multiple photographs of class notes.
+        </p>
+        <input
+          id="classNotesPhotos"
+          type="file"
+          accept="image/*"
+          multiple
+        >
+        <small>You can select several photographs at once.</small>
+      </div>
+
+      <button id="saveButton" type="submit">
+        Save Archive Entry
+      </button>
+
+      <p id="saveStatus" class="status" role="status"></p>
+
+    </form>
+
+    <!-- ADMIN DELETE SECTION -->
+    <h2 class="section-heading">Manage Existing Entries</h2>
+    <div id="adminEntryList"></div>
+
+  </section>
+
+</main>
+
+<!-- FULL ENTRY WINDOW -->
+<dialog id="entryDialog">
+
+  <div class="dialog-top">
+    <h2 id="dialogTitle">Archive Entry</h2>
+    <button id="closeDialog" class="secondary" type="button">
+      Close
+    </button>
+  </div>
+
+  <div id="dialogContent"></div>
+
+</dialog>
 
 <footer>
-The Textual Archive | Literary And Cultural Theory Project
+  <p>The Textual Archive</p>
+  <p>A space for reading, research and interpretation.</p>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script>
+  // ================================================
+  // SUPABASE CONNECTION
+  // ================================================
 
-/* SUPABASE CONNECTION */
+  const SUPABASE_URL = "https://cynetrdvadjlogpqhcfo.supabase.co";
+
+  const SUPABASE_KEY = "sb_publishable_ise-nBvBTYiT0eqQ9hzGGQ_pcTDlHkj";
 
-const SUPABASE_URL =
-"https://cynetrdvadjlogpqhcfo.supabase.co";
+  const TABLE = "archive_entries";
+  const BUCKET = "archive-images";
 
-const SUPABASE_PUBLISHABLE_KEY =
-"sb_publishable_ise-nBvBTYiT0eqQ9hzGGQ_pcTDlHkj";
-
-const supabaseClient = window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_PUBLISHABLE_KEY
-);
-
-let entries = [];
-let currentUser = null;
-let isArchiveAdmin = false;
-
-const archiveList = document.getElementById("archiveList");
-const adminStatus = document.getElementById("adminStatus");
-const addSection = document.getElementById("theory");
-const photoInput = document.getElementById("photos");
-const photoPreview = document.getElementById("photoPreview");
-
-function setStatus(message, isError = false) {
-adminStatus.textContent = message;
-adminStatus.style.color = isError ? "#a32626" : "#386b42";
-}
-
-/* MULTIPLE PHOTO PREVIEW */
-
-photoInput.addEventListener("change", () => {
-
-photoPreview.replaceChildren();
-
-const files = Array.from(photoInput.files || []);
-
-if (files.length > 10) {
-alert("Please select no more than 10 photographs for one entry.");
-photoInput.value = "";
-return;
-}
-
-files.forEach(file => {
-
-if (!file.type.startsWith("image/")) return;
-
-const image = document.createElement("img");
-image.alt = file.name;
-image.src = URL.createObjectURL(file);
-
-image.onload = () => URL.revokeObjectURL(image.src);
-
-photoPreview.appendChild(image);
-
-});
-
-});
-
-/* IMAGE URL / STORAGE HELPERS */
-
-function safeFileName(name) {
-return name.normalize("NFKD")
-.replace(/[^a-zA-Z0-9._-]/g, "_")
-.slice(-100) || "image";
-}
-
-function storagePathFromPublicUrl(url) {
-
-const marker = "/storage/v1/object/public/archive-images/";
-const index = (url || "").indexOf(marker);
-
-if (index < 0) return null;
-
-try {
-return decodeURIComponent(url.slice(index + marker.length));
-} catch {
-return url.slice(index + marker.length);
-}
-
-}
-
-function getEntryPhotos(entry) {
-
-// Supports the new photos array and old single-photo records.
-
-if (Array.isArray(entry.photos)) {
-return entry.photos.filter(Boolean);
-}
-
-if (typeof entry.photos === "string") {
-try {
-const parsed = JSON.parse(entry.photos);
-if (Array.isArray(parsed)) return parsed.filter(Boolean);
-} catch (error) {
-console.warn("Could not parse entry photos", error);
-}
-}
-
-return entry.photo ? [entry.photo] : [];
-
-}
-
-/* LOAD SHARED ARCHIVE ENTRIES */
-
-async function loadEntries() {
-
-archiveList.innerHTML = "<p>Loading archive...</p>";
-
-const { data, error } = await supabaseClient
-.from("archive_entries")
-.select("*")
-.order("created_at", { ascending: false });
-
-if (error) {
-
-console.error("Archive loading error:", error);
-
-archiveList.innerHTML =
-"<p>Could not load the archive. Please refresh or try again later.</p>";
-
-return;
-}
-
-entries = data || [];
-displayEntries();
-
-}
-
-/* DISPLAY ARCHIVE ENTRIES */
-
-function displayEntries() {
-
-const query = document.getElementById("search")
-.value.toLowerCase().trim();
-
-archiveList.replaceChildren();
-
-const filtered = entries.filter(entry =>
-
-[
-entry.title,
-entry.author,
-entry.literary,
-entry.cultural,
-entry.tags,
-entry.excerpt,
-entry.notes
-]
-.join(" ")
-.toLowerCase()
-.includes(query)
-
-);
-
-if (!filtered.length) {
-
-const empty = document.createElement("p");
-
-empty.textContent =
-"No entries found. The archive is waiting for its first shared text.";
-
-archiveList.appendChild(empty);
-return;
-
-}
-
-filtered.forEach(entry => {
-
-const card = document.createElement("article");
-card.className = "entry";
-
-const photos = getEntryPhotos(entry);
-
-if (photos.length) {
-
-const gallery = document.createElement("div");
-gallery.className = "photo-gallery";
-
-photos.forEach((url, index) => {
-
-const link = document.createElement("a");
-
-link.href = url;
-link.target = "_blank";
-link.rel = "noopener noreferrer";
-
-link.setAttribute(
-"aria-label",
-"Open photograph " + (index + 1)
-);
-
-const image = document.createElement("img");
-
-image.src = url;
-image.alt =
-"Photograph " + (index + 1) +
-" for " + (entry.title || "archive entry");
-
-image.loading = "lazy";
-
-link.appendChild(image);
-gallery.appendChild(link);
-
-});
-
-card.appendChild(gallery);
-
-if (photos.length > 1) {
-
-const count = document.createElement("p");
-
-count.className = "photo-count";
-count.textContent = photos.length + " photographs";
-
-card.appendChild(count);
-
-}
-
-}
-
-const heading = document.createElement("h3");
-
-heading.textContent = entry.title || "Untitled";
-
-card.appendChild(heading);
-
-const content = document.createElement("div");
-
-function addText(label, value) {
-
-if (value === null || value === undefined || value === "") return;
-
-const p = document.createElement("p");
-const strong = document.createElement("strong");
-
-strong.textContent = label + ": ";
-
-p.appendChild(strong);
-p.appendChild(document.createTextNode(String(value)));
-
-content.appendChild(p);
-
-}
-
-addText("Author", entry.author);
-addText("Publication", entry.year);
-addText("Excerpt", entry.excerpt);
-addText("Literary Theory", entry.literary);
-addText("Cultural Theory", entry.cultural);
-addText("Annotations", entry.notes);
-addText("Tags", entry.tags);
-
-card.appendChild(content);
-
-if (isArchiveAdmin) {
-
-const remove = document.createElement("button");
-
-remove.className = "delete";
-remove.textContent = "Delete Entry";
-
-remove.addEventListener("click", () => deleteEntry(entry));
-
-card.appendChild(remove);
-
-}
-
-archiveList.appendChild(card);
-
-});
-
-}
-
-/* CHECK ADMINISTRATOR LOGIN AND PERMISSIONS */
-
-async function refreshAdminState() {
-
-const {
-data: sessionData,
-error: sessionError
-} = await supabaseClient.auth.getSession();
-
-if (sessionError) console.error(sessionError);
-
-currentUser = sessionData?.session?.user || null;
-
-isArchiveAdmin = false;
-
-if (currentUser) {
-
-const { data, error } = await supabaseClient
-.from("archive_admins")
-.select("user_id")
-.eq("user_id", currentUser.id)
-.maybeSingle();
-
-if (error) {
-
-console.error("Administrator check error:", error);
-
-setStatus(
-"Signed in, but administrator access could not be verified. Check the archive_admins table policies.",
-true
-);
-
-} else {
-
-isArchiveAdmin = !!data;
-
-}
-
-}
-
-document.getElementById("adminLoginForm").hidden = !!currentUser;
-document.getElementById("adminSignedIn").hidden = !currentUser;
-
-addSection.hidden = !isArchiveAdmin;
-
-if (currentUser && isArchiveAdmin) {
-
-document.getElementById("adminWelcome").textContent =
-"Signed in as " + currentUser.email +
-". You can now add and delete archive entries.";
-
-setStatus("Administrator access confirmed.");
-
-} else if (currentUser && !isArchiveAdmin) {
-
-document.getElementById("adminWelcome").textContent =
-"Signed in as " + currentUser.email +
-", but this account is not listed as an archive administrator.";
-
-setStatus(
-"This account does not have archive administrator permission.",
-true
-);
-
-} else {
-
-document.getElementById("adminWelcome").textContent = "";
-
-setStatus(
-"You are browsing as a visitor. Sign in to manage the archive."
-);
-
-}
-
-displayEntries();
-
-}
-
-/* ADMIN LOGIN */
-
-document.getElementById("adminLoginForm")
-.addEventListener("submit", async event => {
-
-event.preventDefault();
-
-setStatus("Signing in...");
-
-const email =
-document.getElementById("adminEmail").value.trim();
-
-const password =
-document.getElementById("adminPassword").value;
-
-const { error } = await supabaseClient.auth
-.signInWithPassword({ email, password });
-
-document.getElementById("adminPassword").value = "";
-
-if (error) {
-
-setStatus("Sign-in failed: " + error.message, true);
-return;
-
-}
-
-await refreshAdminState();
-
-if (!isArchiveAdmin) {
-
-await supabaseClient.auth.signOut();
-await refreshAdminState();
-
-}
-
-});
-
-/* ADMIN LOGOUT */
-
-document.getElementById("signOutButton")
-.addEventListener("click", async () => {
-
-const { error } = await supabaseClient.auth.signOut();
-
-if (error) {
-setStatus("Sign-out failed: " + error.message, true);
-}
-
-await refreshAdminState();
-
-});
-
-/* DELETE ENTRY AND ITS PHOTOGRAPHS */
-
-async function deleteEntry(entry) {
-
-if (!confirm("Delete this archive entry and its stored photographs?")) {
-return;
-}
-
-const { error } = await supabaseClient
-.from("archive_entries")
-.delete()
-.eq("id", entry.id);
-
-if (error) {
-
-alert("Could not delete this entry: " + error.message);
-return;
-
-}
-
-const paths = getEntryPhotos(entry)
-.map(storagePathFromPublicUrl)
-.filter(Boolean);
-
-if (paths.length) {
-
-const { error: storageError } = await supabaseClient.storage
-.from("archive-images")
-.remove(paths);
-
-if (storageError) {
-
-console.warn(
-"Entry deleted, but some image cleanup failed:",
-storageError
-);
-
-}
-
-}
-
-await loadEntries();
-
-}
-
-/* UPLOAD MULTIPLE PHOTOGRAPHS AND SAVE ENTRY */
-
-document.getElementById("entryForm")
-.addEventListener("submit", async event => {
-
-event.preventDefault();
-
-if (!currentUser || !isArchiveAdmin) {
-
-alert(
-"Please sign in with the archive administrator account first."
-);
-
-return;
-
-}
-
-const files = Array.from(photoInput.files || []);
-
-if (!files.length) {
-
-alert("Please select at least one photograph.");
-return;
-
-}
-
-if (files.length > 10) {
-
-alert("Please select no more than 10 photographs.");
-return;
-
-}
-
-for (const file of files) {
-
-if (!file.type.startsWith("image/")) {
-
-alert("One of the selected files is not an image.");
-return;
-
-}
-
-if (file.size > 1500000) {
-
-alert(
-"Each photograph must be smaller than 1.5 MB: " + file.name
-);
-
-return;
-
-}
-
-}
-
-const submitButton =
-document.getElementById("submitEntryButton");
-
-submitButton.disabled = true;
-submitButton.textContent = "Uploading photographs...";
-
-const uploadedPaths = [];
-const photoUrls = [];
-
-try {
-
-for (let i = 0; i < files.length; i++) {
-
-const file = files[i];
-
-const filePath =
-currentUser.id + "/" +
-Date.now() + "-" +
-i + "-" +
-safeFileName(file.name);
-
-const { error: uploadError } = await supabaseClient.storage
-.from("archive-images")
-.upload(filePath, file, {
-cacheControl: "3600",
-upsert: false,
-contentType: file.type
-});
-
-if (uploadError) {
-
-throw new Error(
-"Image upload failed for " +
-file.name + ": " + uploadError.message
-);
-
-}
-
-uploadedPaths.push(filePath);
-
-const { data: publicUrlData } =
-supabaseClient.storage
-.from("archive-images")
-.getPublicUrl(filePath);
-
-if (!publicUrlData?.publicUrl) {
-
-throw new Error(
-"Could not create a public URL for " + file.name
-);
-
-}
-
-photoUrls.push(publicUrlData.publicUrl);
-
-}
-
-const entry = {
-
-title: document.getElementById("title").value.trim(),
-
-author: document.getElementById("author").value.trim(),
-
-year: document.getElementById("year").value.trim(),
-
-photos: photoUrls,
-
-excerpt: document.getElementById("excerpt").value.trim(),
-
-literary: document.getElementById("literary").value.trim(),
-
-cultural: document.getElementById("cultural").value.trim(),
-
-notes: document.getElementById("notes").value.trim(),
-
-tags: document.getElementById("tags").value.trim()
-
-};
-
-const { error: insertError } = await supabaseClient
-.from("archive_entries")
-.insert(entry);
-
-if (insertError) {
-
-throw new Error(
-"Could not save the archive entry: " +
-insertError.message
-);
-
-}
-
-document.getElementById("entryForm").reset();
-
-photoPreview.replaceChildren();
-
-await loadEntries();
-
-alert(
-"Your text and " +
-photoUrls.length +
-" photograph(s) have been added to the shared archive!"
-);
-
-document.getElementById("archive")
-.scrollIntoView({ behavior: "smooth" });
-
-} catch (error) {
-
-console.error(error);
-
-if (uploadedPaths.length) {
-
-const { error: cleanupError } = await supabaseClient.storage
-.from("archive-images")
-.remove(uploadedPaths);
-
-if (cleanupError) {
-console.warn(
-"Could not clean up uploaded files after failure:",
-cleanupError
-);
-}
-
-}
-
-alert(
-error.message ||
-"Something went wrong while saving the archive entry."
-);
-
-} finally {
-
-submitButton.disabled = false;
-submitButton.textContent = "Add to Archive";
-
-}
-
-});
-
-/* SEARCH */
-
-document.getElementById("search")
-.addEventListener("input", displayEntries);
-
-/* AUTHENTICATION STATE */
-
-supabaseClient.auth.onAuthStateChange(() => {
-
-setTimeout(refreshAdminState, 0);
-
-});
-
-/* START THE ARCHIVE */
-
-(async function initializeArchive() {
-
-await loadEntries();
-await refreshAdminState();
-
-})();
+  const db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  let archiveEntries = [];
+  let currentUser = null;
+  let isAdmin = false;
+
+  const $ = id => document.getElementById(id);
+
+  // ================================================
+  // HELPER FUNCTIONS
+  // ================================================
+
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    })[character]);
+  }
+
+  function showStatus(id, message) {
+    $(id).textContent = message;
+  }
+
+  function normalizePhotoList(value) {
+    if (!value) return [];
+
+    let list = value;
+
+    if (typeof list === "string") {
+      try {
+        list = JSON.parse(list);
+      } catch {
+        return [list];
+      }
+    }
+
+    if (!Array.isArray(list)) return [];
+
+    return list
+      .map(item => typeof item === "string" ? item : item?.url)
+      .filter(Boolean);
+  }
+
+  function getAnnotationPhotos(entry) {
+    return normalizePhotoList(
+      entry.annotation_photos ?? entry.photos ?? entry.photo
+    );
+  }
+
+  function getClassNotesPhotos(entry) {
+    return normalizePhotoList(entry.class_notes_photos);
+  }
+
+  // ================================================
+  // LOAD ARCHIVE ENTRIES
+  // ================================================
+
+  async function loadEntries() {
+    showStatus("archiveStatus", "Loading archive...");
+
+    const { data, error } = await db
+      .from(TABLE)
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Archive loading error:", error);
+
+      showStatus(
+        "archiveStatus",
+        "Could not load archive: " + error.message
+      );
+
+      return;
+    }
+
+    archiveEntries = data || [];
+
+    displayEntries();
+    displayAdminEntries();
+  }
+
+  // ================================================
+  // DISPLAY BOOK COVERS
+  // ================================================
+
+  function displayEntries() {
+    const grid = $("archiveGrid");
+    const search = $("searchInput").value.trim().toLowerCase();
+
+    grid.innerHTML = "";
+
+    const filtered = archiveEntries.filter(entry => {
+      const searchable = [
+        entry.title,
+        entry.author,
+        entry.year,
+        entry.excerpt,
+        entry.literary,
+        entry.cultural,
+        entry.notes,
+        entry.tags
+      ].join(" ").toLowerCase();
+
+      return searchable.includes(search);
+    });
+
+    if (!filtered.length) {
+      showStatus("archiveStatus", "No archive entries found.");
+      return;
+    }
+
+    showStatus(
+      "archiveStatus",
+      filtered.length + " archive entr" +
+      (filtered.length === 1 ? "y" : "ies")
+    );
+
+    filtered.forEach(entry => {
+      const card = document.createElement("div");
+      card.className = "book-entry";
+
+      const cover = document.createElement("div");
+      cover.className = "book-cover";
+
+      const title = document.createElement("div");
+      title.className = "book-title";
+      title.textContent = entry.title || "Untitled";
+
+      const author = document.createElement("div");
+      author.className = "book-author";
+      author.textContent = entry.author || "";
+
+      const year = document.createElement("div");
+      year.className = "book-year";
+      year.textContent = entry.year || "";
+
+      cover.appendChild(title);
+      cover.appendChild(author);
+      cover.appendChild(year);
+
+      const caption = document.createElement("div");
+      caption.className = "book-caption";
+      caption.textContent = entry.author || "Archive Entry";
+
+      card.appendChild(cover);
+      card.appendChild(caption);
+
+      card.addEventListener("click", () => openEntry(entry));
+
+      grid.appendChild(card);
+    });
+  }
+
+  // ================================================
+  // DISPLAY PHOTOGRAPH SECTION IN ENTRY
+  // ================================================
+
+  function appendPhotoSection(title, photos) {
+    if (!photos || !photos.length) return "";
+
+    return `
+      <div class="entry-block">
+        <h3>${escapeHTML(title)}</h3>
+
+        <div class="photo-gallery">
+          ${photos.map(url => `
+            <a
+              href="${escapeHTML(url)}"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="${escapeHTML(url)}"
+                alt="${escapeHTML(title)}"
+                loading="lazy"
+              >
+            </a>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  // ================================================
+  // OPEN FULL BOOK ENTRY
+  // ================================================
+
+  function openEntry(entry) {
+    $("dialogTitle").textContent = entry.title || "Archive Entry";
+
+    const annotationPhotos = getAnnotationPhotos(entry);
+    const classNotesPhotos = getClassNotesPhotos(entry);
+
+    $("dialogContent").innerHTML = `
+      <div class="entry-block">
+        <p>
+          <strong>Author / Source:</strong>
+          ${escapeHTML(entry.author || "Not specified")}
+        </p>
+
+        <p>
+          <strong>Year / Publication:</strong>
+          ${escapeHTML(entry.year || "Not specified")}
+        </p>
+      </div>
+
+      <div class="entry-block">
+        <h3>Text Excerpt</h3>
+        <div class="entry-content">${escapeHTML(entry.excerpt || "No excerpt added.")}</div>
+      </div>
+
+      <div class="entry-block">
+        <h3>Literary Theory</h3>
+        <div class="entry-content">${escapeHTML(entry.literary || "No literary theory added.")}</div>
+      </div>
+
+      <div class="entry-block">
+        <h3>Cultural Theory</h3>
+        <div class="entry-content">${escapeHTML(entry.cultural || "No cultural theory added.")}</div>
+      </div>
+
+      <div class="entry-block">
+        <h3>Annotations and Interpretation</h3>
+        <div class="entry-content">${escapeHTML(entry.notes || "No annotations added.")}</div>
+      </div>
+
+      ${appendPhotoSection(
+        "Text Annotation Photographs",
+        annotationPhotos
+      )}
+
+      ${appendPhotoSection(
+        "Class Notes Photographs",
+        classNotesPhotos
+      )}
+
+      <div class="entry-block">
+        <h3>Tags</h3>
+        <p class="tags">${escapeHTML(entry.tags || "No tags added.")}</p>
+      </div>
+    `;
+
+    $("entryDialog").showModal();
+  }
+
+  $("closeDialog").addEventListener("click", () => {
+    $("entryDialog").close();
+  });
+
+  $("entryDialog").addEventListener("click", event => {
+    if (event.target === $("entryDialog")) {
+      $("entryDialog").close();
+    }
+  });
+
+  // ================================================
+  // ADMIN LOGIN AND PERMISSION CHECK
+  // ================================================
+
+  async function checkAdmin(user) {
+    currentUser = user || null;
+    isAdmin = false;
+
+    if (!currentUser) {
+      updateAdminUI();
+      return false;
+    }
+
+    const { data, error } = await db
+      .from("archive_admins")
+      .select("user_id")
+      .eq("user_id", currentUser.id)
+      .maybeSingle();
+
+    if (error) {
+      console.error("Admin verification error:", error);
+      isAdmin = false;
+    } else {
+      isAdmin = !!data;
+    }
+
+    updateAdminUI();
+
+    return isAdmin;
+  }
+
+  function updateAdminUI() {
+    $("loginPanel").style.display =
+      currentUser ? "none" : "block";
+
+    $("adminPanel").style.display =
+      isAdmin ? "block" : "none";
+
+    displayAdminEntries();
+  }
+
+  $("loginForm").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    showStatus("loginStatus", "Signing in...");
+
+    const email = $("adminEmail").value.trim();
+    const password = $("adminPassword").value;
+
+    const { data, error } = await db.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      showStatus("loginStatus", error.message);
+      return;
+    }
+
+    const allowed = await checkAdmin(data.user);
+
+    if (!allowed) {
+      await db.auth.signOut();
+
+      currentUser = null;
+      isAdmin = false;
+
+      updateAdminUI();
+
+      showStatus(
+        "loginStatus",
+        "This account is not authorised as an archive administrator."
+      );
+
+      return;
+    }
+
+    showStatus("loginStatus", "Administrator signed in successfully.");
+  });
+
+  $("logoutButton").addEventListener("click", async () => {
+    const { error } = await db.auth.signOut();
+
+    if (error) {
+      alert("Could not sign out: " + error.message);
+      return;
+    }
+
+    currentUser = null;
+    isAdmin = false;
+
+    updateAdminUI();
+
+    showStatus("loginStatus", "You have signed out.");
+  });
+
+  db.auth.onAuthStateChange((_event, session) => {
+    setTimeout(() => {
+      checkAdmin(session?.user || null);
+    }, 0);
+  });
+
+  // ================================================
+  // UPLOAD PHOTOGRAPHS TO SUPABASE STORAGE
+  // ================================================
+
+  async function uploadPhotos(files, folder) {
+    const uploadedUrls = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+
+      if (!file.type.startsWith("image/")) {
+        throw new Error(file.name + " is not an image.");
+      }
+
+      const safeName = file.name.replace(
+        /[^a-zA-Z0-9._-]/g,
+        "_"
+      );
+
+      const uniqueName =
+        currentUser.id + "/" +
+        folder + "/" +
+        Date.now() + "-" +
+        i + "-" +
+        safeName;
+
+      const { error } = await db.storage
+        .from(BUCKET)
+        .upload(uniqueName, file, {
+          cacheControl: "3600",
+          upsert: false
+        });
+
+      if (error) {
+        throw error;
+      }
+
+      const { data } = db.storage
+        .from(BUCKET)
+        .getPublicUrl(uniqueName);
+
+      uploadedUrls.push(data.publicUrl);
+    }
+
+    return uploadedUrls;
+  }
+
+  // ================================================
+  // SAVE NEW ARCHIVE ENTRY
+  // ================================================
+
+  $("entryForm").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (!currentUser || !isAdmin) {
+      showStatus(
+        "saveStatus",
+        "Administrator access is required."
+      );
+      return;
+    }
+
+    const saveButton = $("saveButton");
+
+    saveButton.disabled = true;
+
+    showStatus(
+      "saveStatus",
+      "Uploading photographs and saving entry..."
+    );
+
+    try {
+      const annotationFiles = Array.from(
+        $("annotationPhotos").files || []
+      );
+
+      const classNotesFiles = Array.from(
+        $("classNotesPhotos").files || []
+      );
+
+      // Upload text annotation photographs separately.
+      const annotationUrls = await uploadPhotos(
+        annotationFiles,
+        "text-annotations"
+      );
+
+      // Upload class notes photographs separately.
+      const classNotesUrls = await uploadPhotos(
+        classNotesFiles,
+        "class-notes"
+      );
+
+      const entry = {
+        title: $("title").value.trim(),
+        author: $("author").value.trim(),
+        year: $("year").value.trim(),
+        excerpt: $("excerpt").value.trim(),
+        literary: $("literary").value.trim(),
+        cultural: $("cultural").value.trim(),
+        notes: $("notes").value.trim(),
+        tags: $("tags").value.trim(),
+        annotation_photos: annotationUrls,
+        class_notes_photos: classNotesUrls
+      };
+
+      const { error } = await db
+        .from(TABLE)
+        .insert(entry);
+
+      if (error) {
+        throw error;
+      }
+
+      $("entryForm").reset();
+
+      showStatus(
+        "saveStatus",
+        "Archive entry saved successfully!"
+      );
+
+      await loadEntries();
+
+    } catch (error) {
+      console.error("Saving entry error:", error);
+
+      showStatus(
+        "saveStatus",
+        "Could not save entry: " + error.message
+      );
+
+    } finally {
+      saveButton.disabled = false;
+    }
+  });
+
+  // ================================================
+  // ADMIN ENTRY LIST AND DELETE
+  // ================================================
+
+  function displayAdminEntries() {
+    const container = $("adminEntryList");
+
+    container.innerHTML = "";
+
+    if (!isAdmin) return;
+
+    if (!archiveEntries.length) {
+      container.textContent = "No entries available.";
+      return;
+    }
+
+    archiveEntries.forEach(entry => {
+      const item = document.createElement("div");
+      item.className = "admin-entry";
+
+      const title = document.createElement("strong");
+      title.textContent = entry.title || "Untitled";
+
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.className = "danger";
+      deleteButton.textContent = "Delete Entry";
+
+      deleteButton.addEventListener("click", async () => {
+        const confirmed = confirm(
+          'Are you sure you want to delete "' +
+          (entry.title || "Untitled") +
+          '"? This cannot be undone.'
+        );
+
+        if (!confirmed) return;
+
+        deleteButton.disabled = true;
+
+        const { error } = await db
+          .from(TABLE)
+          .delete()
+          .eq("id", entry.id);
+
+        if (error) {
+          alert("Could not delete entry: " + error.message);
+          deleteButton.disabled = false;
+          return;
+        }
+
+        await loadEntries();
+      });
+
+      item.appendChild(title);
+      item.appendChild(deleteButton);
+
+      container.appendChild(item);
+    });
+  }
+
+  // ================================================
+  // SEARCH AND REFRESH
+  // ================================================
+
+  $("searchInput").addEventListener("input", displayEntries);
+
+  $("refreshButton").addEventListener("click", loadEntries);
+
+  // ================================================
+  // INITIALISE WEBSITE
+  // ================================================
+
+  async function initialiseWebsite() {
+    await loadEntries();
+
+    const { data, error } = await db.auth.getSession();
+
+    if (error) {
+      console.error("Session error:", error);
+      return;
+    }
+
+    await checkAdmin(data.session?.user || null);
+  }
+
+  initialiseWebsite();
 
 </script>
 
